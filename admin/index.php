@@ -1,20 +1,31 @@
 <?php
+require_once 'helper/Session.php';
+
+if( Session::checkUserAunthenticate() ){
+
+    header('location:dashboard.php');
+    exit;
+}
+
+
 
 require_once 'class/Users.php';
-require_once 'config/function.php';
+require_once 'validation/LoginValidation.php';
 
-$path = '../public/admin/';
+$path = 'public/';
+
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
     $users = new Users();
 
-    $errors = $users->loginValidation($_POST);
+    $errors = ( new LoginValidation() )->rules($_POST);
 
     if( $errors['validate'] == 1 ) {
+
         $message = $users->login($_POST);
-        print_r($message);
-        die;
+
+
     }
 }
 
@@ -89,14 +100,20 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                             <label class="block clearfix">
 
                                                 <span class="block input-icon input-icon-right">
-                                                    <input type="text" name="email" class="form-control" value="<?php echo old('email'); ?>" placeholder="Email" />
+                                                    <input type="text" name="email" class="form-control" value="" placeholder="Email" />
                                                     <i class="ace-icon fa fa-user"></i>
                                                 </span>
 
                                                 <?php
-                                                if(isset($errors)) {
-                                                    errorDisplay($errors,'email');
+                                                if(isset($errors['errors']['email'])) {
+                                                    echo "<span style='color:red;'>".$errors['errors']['email']."</span>";
                                                 }
+                                                ?>
+
+                                                <?php
+                                               /*
+                                                    errorDisplay($errors,'email');
+                                                }*/
                                                 ?>
 
                                             </label>
@@ -104,14 +121,20 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
                                             <label class="block clearfix">
 
                                                 <span class="block input-icon input-icon-right">
-                                                    <input type="password" name="password" value="<?php echo old('password'); ?>" class="form-control" placeholder="Password" />
+                                                    <input type="password" name="password" value="" class="form-control" placeholder="Password" />
                                                     <i class="ace-icon fa fa-lock"></i>
                                                 </span>
 
                                                 <?php
-                                                if(isset($errors)) {
-                                                    errorDisplay($errors, 'password');
+                                                if(isset($errors['errors']['password'])) {
+                                                    echo "<span style='color:red;'>".$errors['errors']['password']."</span>";
                                                 }
+                                                ?>
+
+                                                <?php
+                                                /*if(isset($errors)) {
+                                                    errorDisplay($errors, 'password');
+                                                }*/
                                                 ?>
 
                                             </label>

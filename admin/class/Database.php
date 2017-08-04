@@ -8,10 +8,10 @@
  */
 class Database
 {
-    protected $host     = 'localhost';
-    protected $user     = 'root';
-    protected $password = '';
-    protected $database = 'oop-news-portal';
+    private $host     = 'localhost';
+    private $user     = 'root';
+    private $password = '';
+    private $database = 'oop-news-portal';
     private $conn;
 
     public function __construct()

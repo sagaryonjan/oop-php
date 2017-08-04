@@ -1,4 +1,20 @@
-<?php $path = '../public/admin/'; ?>
+<?php
+
+require_once 'helper/Session.php';
+
+if(! Session::checkUserAunthenticate() ){
+
+    header('location:index.php');
+    exit;
+
+}
+
+
+$path = 'public/';
+
+
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -290,7 +306,7 @@
                         <img class="nav-user-photo" src="<?php echo $path; ?>images/avatars/user.jpg" alt="Jason's Photo" />
                         <span class="user-info">
 									<small>Welcome,</small>
-									Jason
+                                    <?php echo Session::auth()['username'];?>
 								</span>
 
                         <i class="ace-icon fa fa-caret-down"></i>

@@ -1,4 +1,15 @@
-<?php $path = '../public/admin/'; ?>
+<?php
+
+require_once 'helper/Session.php';
+
+if(! Session::checkUserAunthenticate() ){
+
+    header('location:index.php');
+    exit;
+
+}
+
+$path = 'public/'; ?>
 
 <!DOCTYPE html>
 <html lang="en">
