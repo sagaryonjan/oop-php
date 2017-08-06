@@ -1,4 +1,7 @@
 <?php
+
+$path = 'public/';
+
 require_once 'helper/Session.php';
 
 if( Session::checkUserAunthenticate() ){
@@ -7,15 +10,10 @@ if( Session::checkUserAunthenticate() ){
     exit;
 }
 
-
-
-require_once 'class/Users.php';
-require_once 'validation/LoginValidation.php';
-
-$path = 'public/';
-
-
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
+
+    require_once 'class/Users.php';
+    require_once 'validation/LoginValidation.php';
 
     $users = new Users();
 
@@ -24,7 +22,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
     if( $errors['validate'] == 1 ) {
 
         $message = $users->login($_POST);
-
 
     }
 }
@@ -97,6 +94,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 
                                     <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST">
                                         <fieldset>
+                                            <?php if(isset($message)) : ?>
+                                            <div class="alert alert-block alert-danger">
+                                                <?php echo $message; ?>
+                                            </div>
+                                            <?php endif; ?>
                                             <label class="block clearfix">
 
                                                 <span class="block input-icon input-icon-right">

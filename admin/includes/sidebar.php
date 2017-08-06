@@ -44,9 +44,18 @@
         </li>
 
         <li class="">
-            <a href="category/index">
-                <i class="menu-icon fa fa-tags"></i>
-                <span class="menu-text"> Category </span>
+            <a href="users.php">
+                <i class="menu-icon fa fa-users"></i>
+                <span class="menu-text"> Users </span>
+            </a>
+
+            <b class="arrow"></b>
+        </li>
+
+        <li class="">
+            <a href="dashboard.php?action=logout">
+                <i class="menu-icon fa fa-lock"></i>
+                <span class="menu-text"> Logout </span>
             </a>
 
             <b class="arrow"></b>

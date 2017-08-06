@@ -26,6 +26,16 @@ class Session {
 
     }
 
+    public function logout() {
+
+        if($_SESSION['user_logged_in']) {
+            session_unset();
+            session_destroy();
+        }
+
+        return true;
+    }
+
 
 
 }

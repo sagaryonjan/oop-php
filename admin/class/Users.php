@@ -1,7 +1,6 @@
 <?php
 
 include 'Database.php';
-include '../helper/Session.php';
 
 class Users extends Database
 {
@@ -15,17 +14,25 @@ class Users extends Database
 
        $users  = $this->queryExecute($sql);
 
-       if( isset ( $_SESSION['user_logged_in'] ) ) {
+       if( $users ) {
 
-          header('location:dashboard.php');
+           if( isset ( $_SESSION['user_logged_in'] ) ) {
+
+               header('location:dashboard.php');
+
+           } else {
+
+               Session::put('user_logged_in', $users);
+               header('location:dashboard.php');
+
+           }
 
        } else {
 
-           Session::put('user_logged_in', $users);
+           return 'Incorrect username or password !';
 
        }
 
-       return $users;
    }
 
 
