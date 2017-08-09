@@ -10,6 +10,7 @@ class Users extends Database
 
    public function login($request) {
 
+
        $email = $request['email'];
        $password = md5( $request['password'] );
 
