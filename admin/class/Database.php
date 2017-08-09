@@ -44,6 +44,13 @@ class Database
 
     }
 
+    protected function execute($sql) {
+
+        $results = $this->conn->query($sql);
+
+       return $results;
+    }
+
 
 
 
@@ -52,8 +59,6 @@ class Database
         $data = trim($data);
         $data = stripslashes($data);
         $data = htmlspecialchars($data);
-
-
 
         return $data;
     }

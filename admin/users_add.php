@@ -1,6 +1,7 @@
 <?php
 
 require_once 'helper/Session.php';
+$path = 'public/';
 
 if(! Session::checkUserAunthenticate() ){
 
@@ -9,7 +10,27 @@ if(! Session::checkUserAunthenticate() ){
 
 }
 
-$path = 'public/'; ?>
+if($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+
+    require_once 'class/Users.php';
+
+    $users = new Users();
+
+    require_once 'validation/Users/UserAddFormValidation.php';
+
+    $errors = (new UserAddFormValidation())->rules($_POST);
+
+
+    if ($errors['validate'] == 1) {
+
+       $message = $users->userAdd($_POST);
+
+    }
+}
+
+
+ ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -63,13 +84,25 @@ $path = 'public/'; ?>
                 <div class="row">
                     <div class="col-xs-12">
                         <!-- PAGE CONTENT BEGINS -->
-                        <form class="form-horizontal" role="form">
+
+                        <?php if(isset($message)) : ?>
+                            <div class="alert alert-block alert-success">
+                                <?php echo $message; ?>
+                            </div>
+                        <?php endif; ?>
+
+                        <form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" role="form">
 
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Username </label>
 
                                 <div class="col-sm-9">
                                     <input type="text" id="form-field-1" name="username" placeholder="Username" class="col-xs-10 col-sm-5">
+                                    <?php
+                                    if(isset($errors['errors']['username'])) {
+                                        echo "<span style='color:red;'>".$errors['errors']['username']."</span>";
+                                    }
+                                    ?>
                                 </div>
                             </div>
 
@@ -77,7 +110,7 @@ $path = 'public/'; ?>
                                 <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Email </label>
 
                                 <div class="col-sm-9">
-                                    <input type="text" id="form-field-1" name="email" placeholder="Username" class="col-xs-10 col-sm-5">
+                                    <input type="text" id="form-field-1" name="email" placeholder="Email" class="col-xs-10 col-sm-5">
                                 </div>
                             </div>
 
@@ -85,10 +118,58 @@ $path = 'public/'; ?>
                                 <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Password </label>
 
                                 <div class="col-sm-9">
-                                    <input type="text" id="form-field-1" name="password" placeholder="Username" class="col-xs-10 col-sm-5">
+                                    <input type="password" id="form-field-1" name="password" placeholder="Password" class="col-xs-10 col-sm-5">
                                 </div>
                             </div>
 
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Gender </label>
+
+                                <div class="col-sm-9">
+                                    <select  id="form-field-1" name="gender"class="col-xs-10 col-sm-5">
+                                        <option value="male">Male</option>
+                                        <option value="female"> Female</option>
+                                        <option value="others"> Others</option>
+                                    </select>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Status </label>
+
+                                <div class="col-sm-9">
+                                    <select  id="form-field-1" name="status"class="col-xs-10 col-sm-5">
+                                        <option value="1">Active</option>
+                                        <option value="0"> InActive</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+
+                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Address </label>
+
+                                <div class="col-sm-9">
+                                    <textarea  id="form-field-1" name="address" placeholder="Address" class="col-xs-10 col-sm-5"></textarea>
+
+                                </div>
+                            </div>
+
+                            <div class="clearfix form-actions">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <button class="btn btn-info" type="submit">
+                                        <i class="ace-icon fa fa-check bigger-110"></i>
+                                        Submit
+                                    </button>
+
+                                    &nbsp; &nbsp; &nbsp;
+                                    <button class="btn" type="reset">
+                                        <i class="ace-icon fa fa-undo bigger-110"></i>
+                                        Reset
+                                    </button>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div><!-- /.row -->
