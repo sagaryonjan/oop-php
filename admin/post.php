@@ -2,9 +2,9 @@
 require 'helper/Session.php';
 new Session();
 
-require 'class/Category.php';
+require 'class/Post.php';
 
-$category = new Category();
+$category = new Post();
 $datas = $category->lists();
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -13,28 +13,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 }
 
-/*
-if( isset($_GET['action'])  && $_GET['action'] == 'delete' ) {
-
-    if( isset($_GET['id']) ) {
-
-        if(!$user->edit($_GET['id'])) {
-            header('location:404.php');
-            exit;
-        }
-
-        $messages = [];
-
-        if( $user->delete($_GET['id']) ) {
-            $messages['success'] =  'Your record has been deleted succeessfully';
-        } else {
-            $messages['success'] =  'Something went wrong!!';
-        }
-
-        header('location:users.php');
-
-    }
-}*/
 
 
 $path = 'public/'; ?>
@@ -67,7 +45,7 @@ $path = 'public/'; ?>
                             <i class="ace-icon fa fa-home home-icon"></i>
                             <a href="#">Home</a>
                         </li>
-                        <li class="active">Category</li>
+                        <li class="active">Post</li>
                     </ul><!-- /.breadcrumb -->
                 </div>
 
@@ -80,20 +58,31 @@ $path = 'public/'; ?>
 
                     <div class="page-header">
                         <h1>
-                            Category
+                            Post
                             <small>
                                 <i class="ace-icon fa fa-angle-double-right"></i>
                                 List
                             </small>
 
-                            <a href="category_add.php">
-                                <button class="btn btn-primary"><i class="fa fa-plus"></i> Add New Category</button>
+                            <a href="post_add.php">
+                                <button class="btn btn-primary"><i class="fa fa-plus"></i> Add New Post</button>
                             </a>
                         </h1>
                     </div><!-- /.page-header -->
 
                     <div class="row">
 
+                        <!-- <?php /*if(isset($messages['success'])): */?>
+                    <div class="alert alert-block alert-success">
+                        <button type="button" class="close" data-dismiss="alert">
+                            <i class="ace-icon fa fa-times"></i>
+                        </button>
+
+                        <i class="ace-icon fa fa-check green"></i>
+
+                       <?php /*echo $messages['success']; */?>
+                    </div>
+                    --><?php /*endif; */?>
 
                         <?php
                         if(Session::get('message')) {
@@ -126,6 +115,7 @@ $path = 'public/'; ?>
                                         </label>
                                     </th>
                                     <th>Title</th>
+                                    <th >Image</th>
                                     <th >Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -146,6 +136,9 @@ $path = 'public/'; ?>
                                         <td width="25%">
                                             <?php echo $data['title']; ?>
                                         </td>
+                                        <td width="25%">
+                                           <img src="../public/images/post/<?php echo $data['image']; ?>" height="100px" width="100px">
+                                        </td>
                                         <td>
                                             <?php
                                             if ($data['status'] == 1) :
@@ -165,7 +158,7 @@ $path = 'public/'; ?>
                                         <td>
                                             <div class="hidden-sm hidden-xs btn-group">
 
-                                                <a href="category_edit.php?id=<?php echo $data['id']; ?>">
+                                                <a href="post_edit.php?id=<?php echo $data['id']; ?>">
                                                     <button class="btn btn-xs btn-info">
                                                         <i class="ace-icon fa fa-pencil bigger-120"></i>
                                                     </button>

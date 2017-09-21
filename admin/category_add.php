@@ -1,26 +1,22 @@
 <?php
 
-$path = 'public/';
-
 require_once 'helper/Session.php';
 
 new Session();
 
 if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    require_once 'class/Users.php';
-
-    $users = new Users();
-
-    require_once 'validation/Users/UserAddFormValidation.php';
+    require 'class/Category.php';
+    require 'validation/Category/CategoryAddFormValidation.php';
 
     $errors = (new CategoryAddFormValidation())->rules($_POST);
 
     if ($errors['validate'] == 1) {
 
-       $message = $users->insert($_POST);
+       $message = ( new Category() )->insert($_POST);
 
     }
+
 }
  ?>
 
@@ -50,7 +46,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <i class="ace-icon fa fa-home home-icon"></i>
                         <a href="#">Home</a>
                     </li>
-                    <li class="active">Users</li>
+                    <li class="active">Category</li>
                 </ul><!-- /.breadcrumb -->
             </div>
 
@@ -63,13 +59,13 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 <div class="page-header">
                     <h1>
-                        Users
+                        Category
                         <small>
                             <i class="ace-icon fa fa-angle-double-right"></i>
                             List
                         </small>
 
-                        <a href="users_add.php"> <button class="btn btn-primary"><i class="fa fa-list"></i>Users List</button></a>
+                        <a href="category.php"> <button class="btn btn-primary"><i class="fa fa-list"></i>Category List</button></a>
                     </h1>
                 </div><!-- /.page-header -->
 
@@ -86,73 +82,19 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" role="form">
 
                             <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Username </label>
+                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Title </label>
 
                                 <div class="col-sm-9">
-                                    <input type="text" id="form-field-1" name="username"
-                                           <?php if(isset($_POST['username'])) : ?>
-                                             value="<?php echo $_POST['username']; ?>"
+                                    <input type="text" id="form-field-1" name="title"
+                                           <?php if(isset($_POST['title'])) : ?>
+                                             value="<?php echo $_POST['title']; ?>"
                                            <?php endif; ?>
-                                           placeholder="Username" class="col-xs-10 col-sm-5">
+                                           placeholder="TItle" class="col-xs-10 col-sm-5">
                                     <?php
-                                    if(isset($errors['errors']['username'])) {
-                                        echo "<span style='color:red;'>".$errors['errors']['username']."</span>";
+                                    if(isset($errors['errors']['title'])) {
+                                        echo "<span style='color:red;'>".$errors['errors']['title']."</span>";
                                     }
                                     ?>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Email </label>
-
-                                <div class="col-sm-9">
-                                    <input type="text" id="form-field-1" name="email"
-
-                                        <?php if(isset($_POST['email'])) : ?>
-                                            value="<?php echo $_POST['email']; ?>"
-                                        <?php endif; ?>
-
-                                           placeholder="Email" class="col-xs-10 col-sm-5">
-                                    <?php
-                                    if(isset($errors['errors']['email'])) {
-                                        echo "<span style='color:red;'>".$errors['errors']['email']."</span>";
-                                    }
-                                    ?>
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Password </label>
-
-                                <div class="col-sm-9">
-                                    <input type="password" id="form-field-1" name="password" placeholder="Password" class="col-xs-10 col-sm-5">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Gender </label>
-
-                                <div class="col-sm-9">
-                                    <select  id="form-field-1" name="gender"
-                                             class="col-xs-10 col-sm-5">
-                                        <option
-                                                value="male"
-                                            <?php if(isset($_POST['gender']) && $_POST['gender'] =='male') : ?>
-                                             selected
-                                            <?php endif; ?>
-                                        >Male</option>
-                                        <option value="female"
-                                            <?php if(isset($_POST['gender']) && $_POST['gender'] =='female') : ?>
-                                                selected
-                                            <?php endif; ?>
-                                        > Female</option>
-                                        <option value="others"
-                                            <?php if(isset($_POST['gender']) && $_POST['gender'] =='others') : ?>
-                                                selected
-                                            <?php endif; ?>
-                                        > Others</option>
-                                    </select>
-
                                 </div>
                             </div>
 
@@ -177,18 +119,20 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                             <div class="form-group">
 
-                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Address </label>
+                                <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Description </label>
 
-                                <?php if(isset($_POST['address'])) :
-                                $address = $_POST['address'];
+                                <?php if(isset($_POST['description'])) :
+                                $description = $_POST['description'];
                                 else:
-                                    $address = '';
+                                    $description = '';
                                 endif; ?>
 
                                 <div class="col-sm-9">
-                                    <textarea  id="form-field-1" name="address"
-                                               placeholder="Address"
-                                               class="col-xs-10 col-sm-5"><?php echo $address; ?></textarea>
+                                    <textarea  id="form-field-1" name="description"
+                                               placeholder="Description"
+                                               cols="50"
+                                               rows="15"
+                                               class="col-xs-10 col-sm-5"><?php echo $description; ?></textarea>
 
                                 </div>
                             </div>

@@ -53,6 +53,24 @@
         </li>
 
         <li class="">
+            <a href="category.php">
+                <i class="menu-icon fa fa-tags"></i>
+                <span class="menu-text"> Categories </span>
+            </a>
+
+            <b class="arrow"></b>
+        </li>
+
+        <li class="">
+            <a href="post.php">
+                <i class="menu-icon fa fa-tags"></i>
+                <span class="menu-text"> Posts </span>
+            </a>
+
+            <b class="arrow"></b>
+        </li>
+
+        <li class="">
             <a href="dashboard.php?action=logout">
                 <i class="menu-icon fa fa-lock"></i>
                 <span class="menu-text"> Logout </span>

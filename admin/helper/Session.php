@@ -3,6 +3,18 @@ session_start();
 
 class Session {
 
+    public function __construct()
+    {
+
+        if( ! static::checkUserAunthenticate() ) {
+
+            header('location:index.php');
+
+        }
+
+    }
+
+
     public static function checkUserAunthenticate()
     {
         if(isset( $_SESSION['user_logged_in']) ) {
@@ -26,6 +38,13 @@ class Session {
 
     }
 
+    public static function get($key){
+        if(isset( $_SESSION[$key])) {
+            return $_SESSION[$key];
+        }
+    }
+
+
     public function logout() {
 
         if($_SESSION['user_logged_in']) {
@@ -34,6 +53,15 @@ class Session {
         }
 
         return true;
+    }
+
+    public static function remove($key)
+    {
+        if(isset( $_SESSION[$key])) {
+            unset($_SESSION[$key]);
+            return true;
+        }
+        return false;
     }
 
 

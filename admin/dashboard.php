@@ -4,12 +4,7 @@ require_once 'helper/Session.php';
 
 $path = 'public/';
 
-if(! Session::checkUserAunthenticate() ){
-
-    header('location:index.php');
-    exit;
-
-}
+new Session();
 
 if( isset( $_GET['action'] ) && $_GET['action'] == 'logout' ) {
      Session::logout();

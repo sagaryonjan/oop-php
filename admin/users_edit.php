@@ -6,22 +6,44 @@ require_once 'helper/Session.php';
 
 new Session();
 
-if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    require_once 'class/Users.php';
+if(!isset( $_GET['id'])){
 
-    $users = new Users();
+    header('location:404.php');
+    exit;
 
-    require_once 'validation/Users/UserAddFormValidation.php';
+}
 
-    $errors = (new CategoryAddFormValidation())->rules($_POST);
+require 'class/Users.php';
 
-    if ($errors['validate'] == 1) {
+$users = new Users();
 
-       $message = $users->insert($_POST);
+$users_data = $users->edit($_GET['id']);
+
+if(!$users_data) {
+    header('location:404.php');
+    exit;
+}
+
+ if($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+        require_once 'validation/Users/UserUpdateFormValidation.php';
+
+         if(!$users->edit($_POST['id'])) {
+             header('location:404.php');
+             exit;
+         }
+
+        $errors = (new CategoryUpdateFormValidation())->rules($_POST);
+
+        if ($errors['validate'] == 1) {
+
+            $message = $users->update($_POST);
+
+        }
 
     }
-}
+
  ?>
 
 <!DOCTYPE html>
@@ -83,15 +105,19 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </div>
                         <?php endif; ?>
 
-                        <form class="form-horizontal" action="<?php echo $_SERVER['PHP_SELF']; ?>" method="POST" role="form">
+                        <form class="form-horizontal"
+                              action="<?php echo $_SERVER['PHP_SELF']; ?>?id=<?php echo $users_data['id']; ?>"
+                              method="POST" role="form">
+
+                            <input type="hidden" name="id" value="<?php echo $users_data['id']; ?>">
 
                             <div class="form-group">
                                 <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Username </label>
 
                                 <div class="col-sm-9">
                                     <input type="text" id="form-field-1" name="username"
-                                           <?php if(isset($_POST['username'])) : ?>
-                                             value="<?php echo $_POST['username']; ?>"
+                                           <?php if(isset($users_data['username'])) : ?>
+                                             value="<?php echo $users_data['username']; ?>"
                                            <?php endif; ?>
                                            placeholder="Username" class="col-xs-10 col-sm-5">
                                     <?php
@@ -108,8 +134,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <div class="col-sm-9">
                                     <input type="text" id="form-field-1" name="email"
 
-                                        <?php if(isset($_POST['email'])) : ?>
-                                            value="<?php echo $_POST['email']; ?>"
+                                        <?php if(isset($users_data['email'])) : ?>
+                                            value="<?php echo $users_data['email']; ?>"
                                         <?php endif; ?>
 
                                            placeholder="Email" class="col-xs-10 col-sm-5">
@@ -125,7 +151,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Password </label>
 
                                 <div class="col-sm-9">
-                                    <input type="password" id="form-field-1" name="password" placeholder="Password" class="col-xs-10 col-sm-5">
+                                    <input type="password" id="form-field-1" name="password"
+                                           placeholder="Password" class="col-xs-10 col-sm-5">
                                 </div>
                             </div>
 
@@ -137,17 +164,17 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                              class="col-xs-10 col-sm-5">
                                         <option
                                                 value="male"
-                                            <?php if(isset($_POST['gender']) && $_POST['gender'] =='male') : ?>
+                                            <?php if(isset($users_data['gender']) && $users_data['gender'] =='male') : ?>
                                              selected
                                             <?php endif; ?>
                                         >Male</option>
                                         <option value="female"
-                                            <?php if(isset($_POST['gender']) && $_POST['gender'] =='female') : ?>
+                                            <?php if(isset($users_data['gender']) && $users_data['gender'] =='female') : ?>
                                                 selected
                                             <?php endif; ?>
                                         > Female</option>
                                         <option value="others"
-                                            <?php if(isset($_POST['gender']) && $_POST['gender'] =='others') : ?>
+                                            <?php if(isset($users_data['gender']) && $users_data['gender'] =='others') : ?>
                                                 selected
                                             <?php endif; ?>
                                         > Others</option>
@@ -162,12 +189,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 <div class="col-sm-9">
                                     <select  id="form-field-1" name="status"class="col-xs-10 col-sm-5">
                                         <option value="1"
-                                            <?php if(isset($_POST['status']) && $_POST['status'] == 1) : ?>
+                                            <?php if(isset($users_data['status']) && $users_data['status'] == 1) : ?>
                                                 selected
                                             <?php endif; ?>
                                         >Active</option>
                                         <option value="0"
-                                            <?php if(isset($_POST['status']) && $_POST['status'] == 0) : ?>
+                                            <?php if(isset($users_data['status']) && $users_data['status'] == 0) : ?>
                                                 selected
                                             <?php endif; ?>
                                         > InActive</option>
@@ -179,8 +206,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                                 <label class="col-sm-3 control-label no-padding-right" for="form-field-1"> Address </label>
 
-                                <?php if(isset($_POST['address'])) :
-                                $address = $_POST['address'];
+                                <?php if( isset( $users_data['address'] ) ) :
+                                    $address = $users_data['address'];
                                 else:
                                     $address = '';
                                 endif; ?>

@@ -4,10 +4,12 @@ $path = 'public/';
 
 require_once 'helper/Session.php';
 
-if( Session::checkUserAunthenticate() ){
+if( Session::checkUserAunthenticate() ) {
 
     header('location:dashboard.php');
-    exit;
+
+    Session::auth();
+
 }
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){

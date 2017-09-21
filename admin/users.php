@@ -1,15 +1,22 @@
 <?php
+$path = 'public/';
 
-require_once 'helper/Session.php';
+require 'helper/Session.php';
 
-if(! Session::checkUserAunthenticate() ){
+new Session();
 
-    header('location:index.php');
-    exit;
+require 'class/Users.php';
+
+$user = new Users();
+$datas = $user->lists();
+
+if($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+    $user->destroy($_POST);
 
 }
 
-$path = 'public/'; ?>
+ ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -21,10 +28,12 @@ $path = 'public/'; ?>
 <?php include 'includes/navbar.php'; ?>
 
 
-
 <div class="main-container ace-save-state" id="main-container">
     <script type="text/javascript">
-        try{ace.settings.loadState('main-container')}catch(e){}
+        try {
+            ace.settings.loadState('main-container')
+        } catch (e) {
+        }
     </script>
 
     <?php include 'includes/sidebar.php'; ?>
@@ -56,11 +65,46 @@ $path = 'public/'; ?>
                             List
                         </small>
 
-                        <a href="users_add.php"> <button class="btn btn-primary"><i class="fa fa-plus"></i> Add New Users</button></a>
+                        <a href="users_add.php">
+                            <button class="btn btn-primary"><i class="fa fa-plus"></i> Add New Users</button>
+                        </a>
                     </h1>
                 </div><!-- /.page-header -->
 
                 <div class="row">
+
+                   <!-- <?php /*if(isset($messages['success'])): */?>
+                    <div class="alert alert-block alert-success">
+                        <button type="button" class="close" data-dismiss="alert">
+                            <i class="ace-icon fa fa-times"></i>
+                        </button>
+
+                        <i class="ace-icon fa fa-check green"></i>
+
+                       <?php /*echo $messages['success']; */?>
+                    </div>
+                    --><?php /*endif; */?>
+
+                    <?php
+                    if(Session::get('message')) {
+                        echo Session::get('message');
+                        Session::remove('message');
+                    }
+                    ?>
+
+
+                    <?php if(isset($messages['error'])): ?>
+                        <div class="alert alert-block alert-danger">
+                            <button type="button" class="close" data-dismiss="alert">
+                                <i class="ace-icon fa fa-times"></i>
+                            </button>
+
+                            <i class="ace-icon fa fa-check green"></i>
+
+                            <?php echo $messages['error']; ?>
+                        </div>
+                    <?php endif; ?>
+
                     <div class="col-xs-12">
                         <table id="simple-table" class="table  table-bordered table-hover">
                             <thead>
@@ -82,46 +126,73 @@ $path = 'public/'; ?>
 
                             <tbody>
 
+                            <?php foreach ($datas as $data) : ?>
+
                                 <tr>
-                                <td class="center">
-                                    <label class="pos-rel">
-                                        <input type="checkbox" class="ace">
-                                        <span class="lbl"></span>
-                                    </label>
-                                </td>
+                                    <td class="center">
+                                        <label class="pos-rel">
+                                            <input type="checkbox" class="ace">
+                                            <span class="lbl"></span>
+                                        </label>
+                                    </td>
 
-                                <td>
-                                   sagaryonjan
-                                </td>
+                                    <td>
+                                        <?php echo $data['username']; ?>
+                                    </td>
 
-                                <td>
-                                  sagaryonjan015@gmail.com
-                                </td>
-                                <td>$45</td>
-                                <td class="hidden-480">3,330</td>
-                                <td>Feb 12</td>
+                                    <td>
+                                        <?php echo $data['email']; ?>
+                                    </td>
+                                    <td>here will be image</td>
+                                    <td class="hidden-480"><?php echo $data['gender']; ?></td>
+                                    <td>
+
+                                        <?php
+                                        if ($data['status'] == 1) :
+                                            ?>
+                                            <span class="label label-success arrowed-in arrowed-in-right">active</span>
+                                            <?php
+                                        else:
+                                            ?>
+                                            <span class="label label-warning arrowed-in arrowed-in-right">inactive</span>
+                                            <?php
+                                        endif;
+                                        ?>
+
+                                    </td>
 
 
+                                    <td>
+                                        <div class="hidden-sm hidden-xs btn-group">
 
-                                <td>
-                                    <div class="hidden-sm hidden-xs btn-group">
-                                        <button class="btn btn-xs btn-success">
-                                            <i class="ace-icon fa fa-check bigger-120"></i>
-                                        </button>
+                                            <a href="users_edit.php?id=<?php echo $data['id']; ?>">
+                                                <button class="btn btn-xs btn-info">
+                                                    <i class="ace-icon fa fa-pencil bigger-120"></i>
+                                                </button>
+                                            </a>
+                                          <!--  <a href="<?php /*echo $_SERVER['PHP_SELF'];*/?>?action=delete&id=<?php /*echo $data['id']; */?>">
+                                                <button class="btn btn-xs btn-danger">
+                                                    <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                                                </button>
+                                             <a>-->
 
-                                        <button class="btn btn-xs btn-info">
-                                            <i class="ace-icon fa fa-pencil bigger-120"></i>
-                                        </button>
+                                            <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
 
-                                        <button class="btn btn-xs btn-danger">
-                                            <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                                        </button>
+                                                <input type="hidden" name="_method" value="DELETE">
 
-                                    </div>
+                                                <input type="hidden" name="id" value="<?php echo $data['id']; ?>">
 
-                                </td>
-                            </tr>
+                                                <button type="submit" class="btn btn-xs btn-danger">
+                                                    <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                                                </button>
+                                            </form>
 
+                                        </div>
+
+                                    </td>
+                                </tr>
+
+                            <?php endforeach; ?>
                             </tbody>
                         </table>
                     </div><!-- /.col -->
@@ -146,3 +217,6 @@ $path = 'public/'; ?>
 <?php include 'includes/script.php'; ?>
 </body>
 </html>
+
+
+<?php

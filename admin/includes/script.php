@@ -1,3 +1,4 @@
+<?php echo $path = 'public/'; ?>
 
 <!--[if !IE]> -->
 <script src="<?php echo $path; ?>js/jquery-2.1.4.min.js"></script>
