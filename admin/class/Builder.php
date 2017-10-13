@@ -20,7 +20,10 @@ class Builder extends Database
     /**
      * @var
      */
-    protected $where;
+    private $where;
+
+
+    private $limit;
 
 
     /**
@@ -40,7 +43,24 @@ class Builder extends Database
      */
     protected function get() {
 
-      return  $this->fetchAll("SELECT  $this->select_fields FROM $this->table");
+        $sql = 'SELECT ';
+        if($this->select_fields) {
+            $sql .= $this->select_fields;
+        } else {
+            $sql .= '*';
+        }
+
+        $sql.=" FROM $this->table ";
+
+        if($this->limit) {
+            $sql.= $this->limit;
+        }
+
+        if($this->where) {
+            $sql.= $this->where;
+        }
+
+      return  $this->fetchAll($sql);
 
     }
 
@@ -53,9 +73,39 @@ class Builder extends Database
      */
     public function where($field, $column, $id)
     {
-        $this->where = "WHERE  $field $column '$id'";
+        $this->limit = "WHERE  $field $column '$id' ";
 
         return $this;
+    }
+
+
+    public function limit(int $value)
+    {
+        $this->where = " LIMIT {$value} ";
+
+        return $this;
+    }
+
+    public function toQuery()
+    {
+        $sql = 'SELECT ';
+        if($this->select_fields) {
+            $sql .= $this->select_fields;
+        } else {
+            $sql .= '*';
+        }
+
+        $sql.=" FROM $this->table ";
+
+        if($this->limit) {
+            $sql.= $this->limit;
+        }
+
+        if($this->where) {
+            $sql.= $this->where;
+        }
+
+        return $sql;
     }
 
     /**
@@ -71,6 +121,10 @@ class Builder extends Database
         }
 
         $sql.=" FROM $this->table ";
+
+        if($this->limit) {
+            $sql.= $this->limit;
+        }
 
         if($this->where) {
             $sql.= $this->where;
@@ -116,7 +170,6 @@ class Builder extends Database
         $sql = "UPDATE $this->table SET ";
 
         $len = count($details);
-        print_r($len);
 
         $i = 0;
         foreach ( $details as $key =>  $value) {
@@ -145,6 +198,9 @@ class Builder extends Database
 
 
     }
+
+
+
 
 
 }

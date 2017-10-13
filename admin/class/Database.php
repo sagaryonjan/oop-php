@@ -75,11 +75,7 @@ class Database
 
     protected function sanitizing($data) {
 
-        $data = trim($data);
-
-        $data = stripslashes($data);
-
-        $data = htmlspecialchars($data);
+        $data = mysqli_real_escape_string($this->conn, $data);
 
         return $data;
     }

@@ -1,10 +1,9 @@
 <?php
 
-require 'Builder.php';
-require 'helper/AppHelper.php';
+require 'BaseClass.php';
 
 
-class Users extends Builder
+class Users extends BaseClass
 {
 
    protected $table = 'users';
@@ -55,9 +54,9 @@ class Users extends Builder
        VALUES ('$username', '$gender', '$status', '$address', '$email', '$password') ";
 
        if( $this->execute($sql) )
-           AppHelper::flash('User Added Successfully', 'success');
+           $this->flash('User Added Successfully', 'success');
        else
-           AppHelper::flash('User is not added !!', 'danger');
+           $this->flash('User is not added !!', 'danger');
 
        header('location:users.php');
        exit;
@@ -78,9 +77,9 @@ class Users extends Builder
                 WHERE id=$id";
 
         if( $this->execute($sql) ) {
-            AppHelper::flash('User Updated Successfully', 'success');
+            $this->flash('User Updated Successfully', 'success');
         } else {
-            AppHelper::flash('User is not updated !!', 'danger');
+            $this->flash('User is not updated !!', 'danger');
         }
 
        header('location:users.php');
@@ -110,9 +109,9 @@ class Users extends Builder
                }
 
                if( $this->delete($request['id']) )
-                   AppHelper::flash('User deleted Successfully', 'success');
+                   $this->flash('User deleted Successfully', 'success');
                else
-                   AppHelper::flash('User is not deleted !!', 'danger');
+                   $this->flash('User is not deleted !!', 'danger');
 
                header('location:users.php');
                exit;

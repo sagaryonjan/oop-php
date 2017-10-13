@@ -8,8 +8,6 @@ if( Session::checkUserAunthenticate() ) {
 
     header('location:dashboard.php');
 
-    Session::auth();
-
 }
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){

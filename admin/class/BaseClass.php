@@ -1,12 +1,10 @@
 <?php
+require_once 'Builder.php';
 
-
-class AppHelper
+class BaseClass extends Builder
 {
 
-
-
-    public static function flash($message, $type)
+    public  function flash($message, $type)
     {
 
         $alert_message ="<div class=\"alert alert-block alert-$type\">
@@ -81,6 +79,5 @@ class AppHelper
         return true;
 
     }
-
 
 }
