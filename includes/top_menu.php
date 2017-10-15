@@ -7,10 +7,11 @@
         </ul>
         <div class="search-box">
             <div class="b-search">
-                <form>
-                    <input type="text" value="Search" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search';}">
-                    <input type="submit" value="">
-                </form>
+
+                <input type="text" name="search" id="search" value="<?php  echo  isset($_GET['search'])?$_GET['search']:''; ?>"  >
+
+                <button class="btn btn-primary" id="search-button" ><i class="fa fa-plus"></i></button>
+
             </div>
         </div>
 

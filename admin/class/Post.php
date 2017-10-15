@@ -116,4 +116,16 @@ class Post extends BaseClass
    }
 
 
+   public function getFilterdPost($search) {
+
+       $post =  $this->select('title',
+           'slug',
+           'id',
+           'image',
+           'status',
+           'category_id', 'short_desc', 'long_desc', 'created_at')
+          ->get();
+
+       return $category;
+   }
 }

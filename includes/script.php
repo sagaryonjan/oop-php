@@ -5,6 +5,24 @@
 <script type="text/javascript" src="public/js/easing.js"></script>
 <script type="text/javascript">
     jQuery(document).ready(function($) {
+
+        $('#search-button').click(function (event) {
+            event.preventDefault();
+
+            var search = $('#search').val();
+
+            var self = 'search.php';
+
+            var url = '';
+
+            if( search != '' ) {
+
+                url = '?search='+search;
+
+            }
+            location.href = self + url;
+        });
+
         $(".scroll").click(function(event){
             event.preventDefault();
             $('html,body').animate({scrollTop:$(this.hash).offset().top},900);
